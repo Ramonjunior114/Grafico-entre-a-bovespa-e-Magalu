@@ -1,0 +1,28 @@
+import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Defina os tickers para o índice Bovespa e ação da Magalu
+ticker_bovespa = '^BVSP'
+ticker_magalu = 'MGLU3.SA'
+
+# Defina o intervalo de datas
+data_inicial = '2018-01-02'
+data_final = '2023-03-24'
+
+# Baixe os dados históricos
+dados_bovespa = yf.download(ticker_bovespa, start=data_inicial, end=data_final)
+dados_magalu = yf.download(ticker_magalu, start=data_inicial, end=data_final)
+
+# Calcule os valores normalizados
+bovespa_normalizado = dados_bovespa['Adj Close'] / dados_bovespa['Adj Close'].iloc[0]
+magalu_normalizado = dados_magalu['Adj Close'] / dados_magalu['Adj Close'].iloc[0]
+
+# Crie um novo DataFrame com os dados normalizados
+df_normalizado = pd.DataFrame({'Bovespa': bovespa_normalizado, 'Magalu': magalu_normalizado})
+
+# Plote o gráfico normalizado
+df_normalizado.plot(title='Índice Bovespa vs Ação Magalu (Normalizado)')
+plt.xlabel('Data')
+plt.ylabel('Valor Normalizado')
+plt.show()
